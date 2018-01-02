@@ -7,6 +7,9 @@
 var app = require('../app');
 var debug = require('debug')('clean-eating-backend:server');
 var http = require('http');
+require('dotenv').config({ path: 'variables.env' });
+var mongoose = require('mongoose');
+var mongoDBURI = process.env.DATABASE;
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +23,12 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+// Connect to DB
+console.log(mongoDBURI);
+mongoose.connect(mongoDBURI);
+mongoose.connection.once('open', function() {
+	console.log('Connected to mongo');
+});
 
 /**
  * Listen on provided port, on all network interfaces.

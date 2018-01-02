@@ -5,6 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 require('dotenv').config({ path: 'variables.env' });
+const mongoose = require('mongoose');
+const User = require('./models/User.js');
+const DailyEntry = require('./models/DailyEntry.js');
 //Auth middleware from Auth0 guide
 const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
@@ -13,8 +16,6 @@ const jwtAuthz = require('express-jwt-authz');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
-
-var User = require('./models/User');
 
 var app = express();
 app.use(cors());

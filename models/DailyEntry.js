@@ -12,15 +12,14 @@ const dailyEntrySchema = new mongoose.Schema({
 		// default: 5
 	},
 	entry_questions: [
-    question:{
-      title: String,
-      description: String,
-      maxDailyPoints: Number,
-      startingValue: Number,
-      questionType: String //YESNO, SLIDER, TEXTENTRY
-    }
-  ]
-
+		{
+			questionTitle: String,
+			description: String,
+			maxDailyPoints: Number,
+			startingValue: Number,
+			questionType: String //YESNO, SLIDER, TEXTENTRY
+		}
+	]
 });
 
 module.exports = mongoose.model('DailyEntry', dailyEntrySchema);
