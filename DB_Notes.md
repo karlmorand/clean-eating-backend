@@ -17,3 +17,5 @@ Common DB Interactions:
 
 - daily entries need to be organized/accessed by user and by gym
 
+* At midnight and when user opens the app and a new daily entry hasn't been created......server uses the user's UID to get their gym (denormalize the gym id?) and the set of current questions for the gym, takes each item in that array and pushes it into a new daily entry document which is then
+

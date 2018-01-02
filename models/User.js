@@ -6,11 +6,16 @@ const userSchema = new mongoose.Schema({
 		trim: true,
 		required: 'Please supply a name'
 	},
+	email: {
+		type: String,
+		trim: true
+	},
 	authId: {
 		type: String,
 		required: true
 	},
-	dailyEnties: [
+	roles: [String],
+	currentDailyEntries: [
 		{
 			type: mongoose.Schema.ObjectId,
 			ref: 'DailyEntry'
