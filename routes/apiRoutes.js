@@ -2,12 +2,8 @@ var express = require('express');
 var router = express.Router();
 const jwtAuthz = require('express-jwt-authz');
 const { checkJwt } = require('../helpers/auth.js');
+const entriesController = require('../controllers/entriesController.js');
 
-router.get('/private', checkJwt, jwtAuthz(['athlete']), function(req, res) {
-	console.log('Got a request!!');
-	console.log(req.user);
-	console.log('Req headers: ', req.headers);
-	console.log('VARS: ', process.env.AUTH0_AUDIENCE, process.env.AUTH0_DOMAIN);
-	res.send('In private route 💩');
-});
+router.get('/dailyentry', checkJwt, jwtAuthz(['athlete']), entriesController.getDailyEntry);
+
 module.exports = router;
