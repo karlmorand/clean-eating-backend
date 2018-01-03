@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		min: 1,
 		default: 1
+	},
+	onboardingComplete: {
+		type: Boolean,
+		default: false
 	}
 });
 

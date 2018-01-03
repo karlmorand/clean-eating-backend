@@ -19,3 +19,8 @@ Common DB Interactions:
 
 * At midnight and when user opens the app and a new daily entry hasn't been created......server uses the user's UID to get their gym (denormalize the gym id?) and the set of current questions for the gym, takes each item in that array and pushes it into a new daily entry document which is then
 
+Initial flow:
+
+* user signs up
+  * Auth0 creates an account for them, gives them scope of Athlete and adds them to the Mongo db
+  * onboarding complete flag set to false in mongodb
