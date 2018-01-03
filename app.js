@@ -26,11 +26,11 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', apiRoutes);
-// app.use(express.static(path.join(__dirname, 'client/build')));
-//
-// app.get('*', (req, res) => {
-// 	res.sendFile(path.join(__dirname + '/client/build/index.html'));
-// });
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
 app.use(function(req, res, next) {
 	var err = new Error('Not Found');
