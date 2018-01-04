@@ -15,6 +15,15 @@ const userSchema = new mongoose.Schema({
 		required: true
 	},
 	roles: [String],
+	currentQuestions: [
+		{
+			questionTitle: String,
+			description: String,
+			maxDailyPoints: Number,
+			startingValue: Number,
+			questionType: String //YESNO, SLIDER, TEXTENTRY
+		}
+	],
 	currentDailyEntries: [
 		{
 			type: mongoose.Schema.ObjectId,

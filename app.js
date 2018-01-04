@@ -25,8 +25,9 @@ if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/api', apiRoutes);
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client/build')));
+app.use('/api', apiRoutes);
 
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname + '/client/build/index.html'));
