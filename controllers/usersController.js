@@ -1,19 +1,32 @@
 const mongoose = require('mongoose');
-// const User = mongoose.model('User');
+const User = mongoose.model('User');
+const Gym = mongoose.model('Gym');
 
-exports.addUser = (req, res) => {
-	// const newUser =
-};
-
-exports.getUser = (req, res) => {
-	res.send('Get user!!');
-};
-
-exports.getDailyEntry = (req, res) => {
-	console.log('getting daily entry');
-	console.log(req.body);
-	res.send('Get daily entry route');
-	//check if user is in the DB
-
-	//search the daily entries that match their UID and the req's date
+exports.userSetup = (req, res) => {
+	// TODO: Hardcoding CF513 as the gym for now since it's the only one, eventually will have to pass in the id of the gym the user selected during the onboarding
+	// TODO: Make async to be cleaner than these nested callbacks
+	Gym.findOne({}).exec((err, gym) => {
+		if (err) {
+			console.log(err);
+			return err;
+		}
+		User.findOneAndUpdate(
+			{ authId: req.params.authId },
+			{
+				name: req.body.name,
+				gym: gym._id,
+				challengeFoodLevel: req.body.challengeFoodLevel,
+				currentQuestions: gym.currentQuestions,
+				onboardingComplete: true
+			},
+			{ new: true }
+		).exec((err, user) => {
+			if (err) {
+				console.log(err);
+				return err;
+			}
+			// TODO: Add user to a gym's list of members
+			res.send(user);
+		});
+	});
 };

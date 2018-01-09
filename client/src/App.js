@@ -11,27 +11,28 @@ class App extends Component {
 	login() {
 		this.props.auth.login();
 	}
-	// getDailyEntry() {
-	// 	const { getAccessToken } = this.props.auth;
-	// 	const API_URL = 'http://localhost:4000/api';
-	// 	const headers = { Authorization: `Bearer ${getAccessToken()}` };
-	// 	console.log(headers);
-	// 	axios
-	// 		.get(`${API_URL}/dailyentry`, { headers })
-	// 		.then(res => {
-	// 			console.log('Response from server: ', res);
-	// 		})
-	// 		.catch(error => {
-	// 			console.log(error);
-	// 		});
-	// }
+
 	getDailyEntry() {
-		const { getAccessToken } = this.props.auth;
+		const { getAccessToken, userProfile } = this.props.auth;
+		const userId = userProfile.sub;
 		const API_URL = 'http://localhost:4000/api';
 		const headers = { Authorization: `Bearer ${getAccessToken()}` };
-		console.log('HEADERS: ', headers);
 		axios
-			.get(`${API_URL}/dailyentry`, { headers })
+			.get(`${API_URL}/dailyentry/${userId}`, { headers })
+			.then(response => console.log(response))
+			.catch(error => console.log(error));
+	}
+	userSetup() {
+		const { getAccessToken, userProfile } = this.props.auth;
+		const userId = userProfile.sub;
+		const API_URL = 'http://localhost:4000/api';
+		const headers = { Authorization: `Bearer ${getAccessToken()}` };
+		const data = {
+			challengeFoodLevel: 1,
+			name: userProfile.name
+		};
+		axios
+			.post(`${API_URL}/usersetup/${userId}`, data, { headers })
 			.then(response => console.log(response))
 			.catch(error => console.log(error));
 	}
@@ -77,8 +78,13 @@ class App extends Component {
 							</Button>
 						)}
 						{isAuthenticated() && (
+							<Button bsStyle="primary" className="btn-margin" onClick={this.userSetup.bind(this)}>
+								User Setup
+							</Button>
+						)}
+						{isAuthenticated() && (
 							<Button bsStyle="primary" className="btn-margin" onClick={this.getDailyEntry.bind(this)}>
-								Get Daily Entry
+								Get today's entry
 							</Button>
 						)}
 					</Navbar.Header>

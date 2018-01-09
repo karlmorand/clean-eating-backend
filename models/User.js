@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-	userName: {
+	name: {
 		type: String,
 		trim: true,
 		required: 'Please supply a name'
@@ -15,15 +15,7 @@ const userSchema = new mongoose.Schema({
 		required: true
 	},
 	roles: [String],
-	currentQuestions: [
-		{
-			questionTitle: String,
-			description: String,
-			maxDailyPoints: Number,
-			startingValue: Number,
-			questionType: String //YESNO, SLIDER, TEXTENTRY
-		}
-	],
+	currentQuestions: [],
 	currentDailyEntries: [
 		{
 			type: mongoose.Schema.ObjectId,
@@ -35,10 +27,14 @@ const userSchema = new mongoose.Schema({
 		min: 1,
 		default: 1
 	},
+	gym: {
+		type: mongoose.Schema.ObjectId,
+		ref: 'Gym'
+	},
 	onboardingComplete: {
 		type: Boolean,
 		default: false
 	}
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema, 'users');

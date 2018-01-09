@@ -23,4 +23,4 @@ const gymSchema = new mongoose.Schema({
 	]
 });
 
-module.exports = mongoose.model('Gym', gymSchema);
+module.exports = mongoose.model('Gym', gymSchema, 'gyms');

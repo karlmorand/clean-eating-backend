@@ -21,7 +21,7 @@ export default class Auth {
 		this.handleAuthentication = this.handleAuthentication.bind(this);
 		this.isAuthenticated = this.isAuthenticated.bind(this);
 		this.getAccessToken = this.getAccessToken.bind(this);
-		this.getProfile = this.getProfile.bind(this);
+		this.setProfile = this.setProfile.bind(this);
 		this.scheduleRenewal();
 	}
 
@@ -32,8 +32,13 @@ export default class Auth {
 	handleAuthentication() {
 		this.auth0.parseHash((err, authResult) => {
 			if (authResult && authResult.accessToken && authResult.idToken) {
-				this.setSession(authResult);
-				history.replace('/home');
+				this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
+					if (profile) {
+						this.userProfile = profile;
+					}
+					this.setSession(authResult);
+					history.replace('/home');
+				});
 			} else if (err) {
 				history.replace('/home');
 				console.log(err);
@@ -49,8 +54,6 @@ export default class Auth {
 		localStorage.setItem('access_token', authResult.accessToken);
 		localStorage.setItem('id_token', authResult.idToken);
 		localStorage.setItem('expires_at', expiresAt);
-		console.log('access token: ', authResult.accessToken);
-		console.log('id token: ', authResult.idToken);
 		// schedule a token renewal
 		this.scheduleRenewal();
 
@@ -66,7 +69,7 @@ export default class Auth {
 		return accessToken;
 	}
 
-	getProfile(cb) {
+	setProfile(cb) {
 		let accessToken = this.getAccessToken();
 		this.auth0.client.userInfo(accessToken, (err, profile) => {
 			if (profile) {
@@ -76,7 +79,6 @@ export default class Auth {
 		});
 	}
 
-	getUserId() {}
 	logout() {
 		// Clear access token and ID token from local storage
 		localStorage.removeItem('access_token');
