@@ -12,16 +12,6 @@ class App extends Component {
 		this.props.auth.login();
 	}
 
-	getDailyEntry() {
-		const { getAccessToken, userProfile } = this.props.auth;
-		const userId = userProfile.sub;
-		const API_URL = 'http://localhost:4000/api';
-		const headers = { Authorization: `Bearer ${getAccessToken()}` };
-		axios
-			.get(`${API_URL}/dailyentry/${userId}`, { headers })
-			.then(response => console.log(response))
-			.catch(error => console.log(error));
-	}
 	userSetup() {
 		const { getAccessToken, userProfile } = this.props.auth;
 		const userId = userProfile.sub;
@@ -83,7 +73,7 @@ class App extends Component {
 							</Button>
 						)}
 						{isAuthenticated() && (
-							<Button bsStyle="primary" className="btn-margin" onClick={this.getDailyEntry.bind(this)}>
+							<Button bsStyle="primary" className="btn-margin" onClick={this.goTo.bind(this, 'dailyentry')}>
 								Get today's entry
 							</Button>
 						)}
