@@ -27,6 +27,10 @@ const dailyEntrySchema = new mongoose.Schema({
 				type: Number,
 				default: 0
 			},
+			userInput: {
+				type: String,
+				default: ''
+			},
 			questionType: String //YESNO, SLIDER, TEXTENTRY
 		}
 	]

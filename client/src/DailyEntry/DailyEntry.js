@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import YesNoAnswer from './AnswerComponents/YesNoAnswer';
 import Slider from './AnswerComponents/Slider';
+import TextEntry from './AnswerComponents/TextEntry';
 import LoadingSpinner from '../HelperComponents/LoadingSpinner';
 
 class DailyEntry extends Component {
@@ -69,16 +70,19 @@ class DailyEntry extends Component {
 				case 'SLIDER':
 					return <Slider key={question._id} handleChange={this.handleAnswerChange} question={question} />;
 					break;
+				case 'TEXTENTRY':
+					return <TextEntry key={question._id} handleChange={this.handleAnswerChange} question={question} />;
+					break;
 			}
 		});
 		return questionList;
 	}
 
-	handleAnswerChange(answerId, newValue) {
+	handleAnswerChange(answerId, newValue, userInput = '') {
 		this.setState({
 			entryQuestions: this.state.entryQuestions.map((question, index) => {
 				if (question._id !== answerId) return question;
-				return { ...question, currentValue: newValue };
+				return { ...question, currentValue: newValue, userInput: userInput };
 			})
 		});
 	}
