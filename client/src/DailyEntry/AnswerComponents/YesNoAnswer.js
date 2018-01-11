@@ -13,10 +13,10 @@ class YesNoAnswer extends Component {
 		console.log(isAdd);
 		if (isAdd) {
 			this.checked = true;
-			this.props.handleChange(_id, maxDailyPoints, 'ADD');
+			this.props.handleChange(_id, maxDailyPoints);
 		} else {
 			this.checked = false;
-			this.props.handleChange(_id, maxDailyPoints, 'SUBTRACT');
+			this.props.handleChange(_id, 0);
 		}
 	}
 

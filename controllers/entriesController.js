@@ -5,6 +5,7 @@ const Gym = mongoose.model('Gym');
 const isToday = require('date-fns/is_today');
 // might want to use date-fns for date issues
 // TODO: cleanup the callback hell here, use async
+// TODO: Sometimes on page refresh (when not logging in, but going back to the page after a while), no user is found b/c the info isn't passed, which cuases a fatal error
 exports.getDailyEntry = (req, res) => {
 	let entryToReturn;
 	User.findOne({ authId: req.params.authId })
@@ -12,8 +13,6 @@ exports.getDailyEntry = (req, res) => {
 		.exec((err, user) => {
 			// function to check if the entry is from today
 			const entryIsToday = entry => {
-				console.log('HERE');
-				console.log(isToday(entry.date));
 				return isToday(entry.date);
 			};
 
