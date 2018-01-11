@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Button } from 'semantic-ui-react';
 import YesNoAnswer from './AnswerComponents/YesNoAnswer';
 import Slider from './AnswerComponents/Slider';
 import TextEntry from './AnswerComponents/TextEntry';
 import LoadingSpinner from '../HelperComponents/LoadingSpinner';
 
 class DailyEntry extends Component {
+	// TODO: Pull out API_URL and put it in env
 	constructor(props) {
 		super(props);
 		this.state = {
 			entryQuestions: this.props.entryQuestions || [],
 			date: this.props.date || null,
+			entryId: this.props.entryId || '',
 			profile: {}
 		};
 		this.getTodaysEntry = this.getTodaysEntry.bind(this);
@@ -49,10 +52,20 @@ class DailyEntry extends Component {
 			.then(response =>
 				this.setState({
 					entryQuestions: response.data.entryQuestions,
-					entryTotal: response.data.entryTotal,
-					date: response.data.date
+					date: response.data.date,
+					entryId: response.data._id
 				})
 			)
+			.catch(error => console.log(error));
+	}
+	handleAnswerSubmit() {
+		const { getAccessToken } = this.props.auth;
+		const API_URL = 'http://localhost:4000/api';
+		const headers = { Authorization: `Bearer ${getAccessToken()}` };
+		const data = this.state.entryQuestions;
+		axios
+			.post(`${API_URL}/dailyentry/${this.state.entryId}`, data, { headers })
+			.then(response => console.log(response))
 			.catch(error => console.log(error));
 	}
 
@@ -87,10 +100,6 @@ class DailyEntry extends Component {
 		});
 	}
 
-	handleAnswerSubmit() {
-		console.log('Submit answer');
-	}
-
 	render() {
 		const { dailyEntry } = this.state;
 
@@ -100,6 +109,10 @@ class DailyEntry extends Component {
 					<div>
 						<h2>{this.calcEntryTotal()}</h2>
 						{this.createQuestionList()}
+						<Button primary onClick={this.handleAnswerSubmit}>
+							Save
+						</Button>
+						<Button>Cancel</Button>
 					</div>
 				) : (
 					<LoadingSpinner />
