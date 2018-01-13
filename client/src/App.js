@@ -42,7 +42,7 @@ class App extends Component {
 				<Navbar fluid>
 					<Navbar.Header>
 						<Navbar.Brand>
-							<a onClick={this.goTo.bind(this, 'home')}>Auth0 - React</a>
+							<a onClick={this.goTo.bind(this, 'home')}>Clean Eating Challenge</a>
 						</Navbar.Brand>
 						<Button bsStyle="primary" className="btn-margin" onClick={this.goTo.bind(this, 'home')}>
 							Home
@@ -55,11 +55,6 @@ class App extends Component {
 						{isAuthenticated() && (
 							<Button bsStyle="primary" className="btn-margin" onClick={this.goTo.bind(this, 'profile')}>
 								Profile
-							</Button>
-						)}
-						{isAuthenticated() && (
-							<Button bsStyle="primary" className="btn-margin" onClick={this.renewToken.bind(this)}>
-								Renew Token
 							</Button>
 						)}
 						{isAuthenticated() && (
