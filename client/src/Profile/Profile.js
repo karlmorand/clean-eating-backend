@@ -19,6 +19,7 @@ class Profile extends Component {
 	}
 
 	componentDidMount() {
+		console.log('did mount');
 		const { userProfile, setProfile } = this.props.auth;
 		if (!userProfile) {
 			setProfile((err, authProfile) => {
@@ -60,7 +61,6 @@ class Profile extends Component {
 				{name ? (
 					<div>
 						<h1>{name}</h1>
-						<h1>{this.state.challengeLevel}</h1>
 						<Form>
 							<Form.Group inline>
 								<label>Size</label>
@@ -68,7 +68,27 @@ class Profile extends Component {
 								<Form.Radio label="Lifestyle" value={2} checked={challengeLevel === 2} onChange={this.handleChange} />
 								<Form.Radio label="Performance" value={3} checked={challengeLevel === 3} onChange={this.handleChange} />
 							</Form.Group>
-							<Form.Button>Submit</Form.Button>
+							<div>
+								<h1>Challenge Levels</h1>
+								<h2>Kickstarter</h2>
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi officiis soluta nemo, consequatur
+									excepturi molestias deleniti minus iste quas? Et, officia, cupiditate. Vel aspernatur doloremque
+									accusamus! Iste quos, atque deleniti.
+								</p>
+								<h2>Lifestyle</h2>
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi officiis soluta nemo, consequatur
+									excepturi molestias deleniti minus iste quas? Et, officia, cupiditate. Vel aspernatur doloremque
+									accusamus! Iste quos, atque deleniti.
+								</p>
+								<h2>Performance</h2>
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi officiis soluta nemo, consequatur
+									excepturi molestias deleniti minus iste quas? Et, officia, cupiditate. Vel aspernatur doloremque
+									accusamus! Iste quos, atque deleniti.
+								</p>
+							</div>
 						</Form>
 					</div>
 				) : (

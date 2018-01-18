@@ -12,20 +12,20 @@ class App extends Component {
 		this.props.auth.login();
 	}
 
-	userSetup() {
-		const { getAccessToken, userProfile } = this.props.auth;
-		const userId = userProfile.sub;
-		const headers = { Authorization: `Bearer ${getAccessToken()}` };
-		const data = {
-			// TODO: Make challenge food level selection based on user input, not hard coded
-			challengeFoodLevel: 1,
-			name: userProfile.name
-		};
-		axios
-			.post(`api/usersetup/${userId}`, data, { headers })
-			.then(response => console.log(response))
-			.catch(error => console.log(error));
-	}
+	// userSetup() {
+	// 	const { getAccessToken, userProfile } = this.props.auth;
+	// 	const userId = userProfile.sub;
+	// 	const headers = { Authorization: `Bearer ${getAccessToken()}` };
+	// 	const data = {
+	// 		// TODO: Make challenge food level selection based on user input, not hard coded
+	// 		challengeFoodLevel: 1,
+	// 		name: userProfile.name
+	// 	};
+	// 	axios
+	// 		.post(`api/usersetup/${userId}`, data, { headers })
+	// 		.then(response => console.log(response))
+	// 		.catch(error => console.log(error));
+	// }
 	logout() {
 		this.props.auth.logout();
 	}
@@ -60,11 +60,6 @@ class App extends Component {
 						{isAuthenticated() && (
 							<Button bsStyle="primary" className="btn-margin" onClick={this.logout.bind(this)}>
 								Log Out
-							</Button>
-						)}
-						{isAuthenticated() && (
-							<Button bsStyle="primary" className="btn-margin" onClick={this.userSetup.bind(this)}>
-								User Setup
 							</Button>
 						)}
 						{isAuthenticated() && (
