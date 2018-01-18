@@ -5,6 +5,10 @@ const dailyEntrySchema = new mongoose.Schema({
 		type: mongoose.Schema.ObjectId,
 		ref: 'User'
 	},
+	gym: {
+		type: mongoose.Schema.ObjectId,
+		ref: 'Gym'
+	},
 	authId: String,
 	date: {
 		type: Date,

@@ -15,14 +15,14 @@ class App extends Component {
 	userSetup() {
 		const { getAccessToken, userProfile } = this.props.auth;
 		const userId = userProfile.sub;
-		const API_URL = 'http://localhost:4000/api';
 		const headers = { Authorization: `Bearer ${getAccessToken()}` };
 		const data = {
+			// TODO: Make challenge food level selection based on user input, not hard coded
 			challengeFoodLevel: 1,
 			name: userProfile.name
 		};
 		axios
-			.post(`${API_URL}/usersetup/${userId}`, data, { headers })
+			.post(`api/usersetup/${userId}`, data, { headers })
 			.then(response => console.log(response))
 			.catch(error => console.log(error));
 	}

@@ -30,3 +30,33 @@ exports.userSetup = (req, res) => {
 		});
 	});
 };
+
+exports.updateUserChallengeLevel = (req, res) => {
+	console.log('HERE: ', req.body.challengeFoodLevel);
+
+	User.findOneAndUpdate(
+		{ _id: req.params.id },
+		{
+			challengeFoodLevel: req.body.challengeFoodLevel
+		},
+		{ new: true }
+	).exec((err, updatedUser) => {
+		if (err) {
+			console.log(err);
+			return err;
+		} else {
+			console.log(updatedUser);
+			res.send(updatedUser);
+		}
+	});
+};
+
+exports.getUserProfile = (req, res) => {
+	User.findOne({ authId: req.params.id }).exec((err, user) => {
+		if (err) {
+			console.log(err);
+			return err;
+		}
+		res.send(user);
+	});
+};

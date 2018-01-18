@@ -25,7 +25,7 @@ exports.getDailyEntry = (req, res) => {
 					if (err) {
 						return err;
 					}
-					user.currentDailyEntries.push(newDailyEntry);
+					user.currentDailyEntries.push(newDailyEntry._id);
 					user.save((err, updatedUser) => {
 						if (err) {
 							return err;
