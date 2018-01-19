@@ -13,7 +13,7 @@ module.exports.checkJwt = jwt({
 	}),
 
 	// Validate the audience and the issuer.
-	audience: 'https://cleaneatingapi.karlmorand.com',
-	issuer: 'https://clean-eating.auth0.com/',
+	audience: `https://${process.env.AUTH0_AUDIENCE}`,
+	issuer: `https://${process.env.AUTH0_DOMAIN}`,
 	algorithms: ['RS256']
 });
