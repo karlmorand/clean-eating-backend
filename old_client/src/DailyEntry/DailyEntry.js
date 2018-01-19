@@ -45,17 +45,17 @@ class DailyEntry extends Component {
 	getTodaysEntry() {
 		const { getAccessToken } = this.props.auth;
 		const userId = this.state.profile.sub;
-		const API_URL = 'http://localhost:4000/api';
 		const headers = { Authorization: `Bearer ${getAccessToken()}` };
 		axios
-			.get(`${API_URL}/dailyentry/${userId}`, { headers })
-			.then(response =>
+			.get(`/api/dailyentry/${userId}`, { headers })
+			.then(response => {
+				console.log(response);
 				this.setState({
 					entryQuestions: response.data.entryQuestions,
 					date: response.data.date,
 					entryId: response.data._id
-				})
-			)
+				});
+			})
 			.catch(error => console.log(error));
 	}
 	handleAnswerSubmit() {

@@ -3,6 +3,7 @@ const User = mongoose.model('User');
 const Gym = mongoose.model('Gym');
 
 exports.userSetup = (req, res) => {
+	console.log('USER SETUP');
 	// TODO: Hardcoding CF513 as the gym for now since it's the only one, eventually will have to pass in the id of the gym the user selected during the onboarding
 	// TODO: Make async to be cleaner than these nested callbacks
 	Gym.findOne({}).exec((err, gym) => {
@@ -13,9 +14,7 @@ exports.userSetup = (req, res) => {
 		User.findOneAndUpdate(
 			{ authId: req.params.authId },
 			{
-				name: req.body.name,
 				gym: gym._id,
-				challengeFoodLevel: req.body.challengeFoodLevel,
 				currentQuestions: gym.currentQuestions,
 				onboardingComplete: true
 			},

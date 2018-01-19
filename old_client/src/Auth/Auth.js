@@ -30,6 +30,7 @@ export default class Auth {
 	}
 
 	handleAuthentication() {
+		console.log('in handle auth');
 		this.auth0.parseHash((err, authResult) => {
 			if (authResult && authResult.accessToken && authResult.idToken) {
 				this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
@@ -37,7 +38,7 @@ export default class Auth {
 						this.userProfile = profile;
 					}
 					this.setSession(authResult);
-					history.replace('/home');
+					history.replace('/profile');
 				});
 			} else if (err) {
 				history.replace('/home');

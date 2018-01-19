@@ -7,6 +7,7 @@ const isToday = require('date-fns/is_today');
 // TODO: cleanup the callback hell here, use async
 // TODO: Sometimes on page refresh (when not logging in, but going back to the page after a while), no user is found b/c the info isn't passed, which cuases a fatal error
 exports.getDailyEntry = (req, res) => {
+	console.log('Getting daily entry');
 	let entryToReturn;
 	User.findOne({ authId: req.params.authId })
 		.populate('currentDailyEntries')
@@ -23,6 +24,7 @@ exports.getDailyEntry = (req, res) => {
 					newDailyEntry
 				) {
 					if (err) {
+						console.log(err);
 						return err;
 					}
 					user.currentDailyEntries.push(newDailyEntry._id);

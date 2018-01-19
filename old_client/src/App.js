@@ -4,6 +4,29 @@ import axios from 'axios';
 import './App.css';
 
 class App extends Component {
+	constructor(props) {
+		super(props);
+		console.log('App constructor props: ', this.props);
+		this.state = {
+			authProfile: {}
+		};
+		this.userSetup = this.userSetup.bind(this);
+	}
+	componentDidMount() {
+		//when app first loads isAuthenticated is returning false and thus the userSetup function is never called...perhaps try ignoring the issue and just call userSetup from componentDidMount without any of the if block checks...ejall
+		const { isAuthenticated, userProfile, setProfile } = this.props.auth;
+		if (!userProfile && isAuthenticated()) {
+			console.log('no profile');
+			setProfile((err, authProfile) => {
+				this.setState({ authProfile }, this.userSetup);
+			});
+		} else {
+			console.log('found profile');
+			this.setState({ authProfile: use
+				rProfile }, this.userSetup);
+		}
+	}
+
 	goTo(route) {
 		this.props.history.replace(`/${route}`);
 	}
@@ -12,20 +35,17 @@ class App extends Component {
 		this.props.auth.login();
 	}
 
-	// userSetup() {
-	// 	const { getAccessToken, userProfile } = this.props.auth;
-	// 	const userId = userProfile.sub;
-	// 	const headers = { Authorization: `Bearer ${getAccessToken()}` };
-	// 	const data = {
-	// 		// TODO: Make challenge food level selection based on user input, not hard coded
-	// 		challengeFoodLevel: 1,
-	// 		name: userProfile.name
-	// 	};
-	// 	axios
-	// 		.post(`api/usersetup/${userId}`, data, { headers })
-	// 		.then(response => console.log(response))
-	// 		.catch(error => console.log(error));
-	// }
+	userSetup() {
+		console.log('user setup function');
+		const { getAccessToken, userProfile } = this.props.auth;
+		const userId = userProfile.sub;
+		const headers = { Authorization: `Bearer ${getAccessToken()}` };
+		console.log(headers);
+		axios
+			.post(`api/usersetup/${userId}`, null, { headers })
+			.then(response => console.log(response))
+			.catch(error => console.log(error));
+	}
 	logout() {
 		this.props.auth.logout();
 	}
