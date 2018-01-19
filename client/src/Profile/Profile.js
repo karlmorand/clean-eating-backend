@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Panel, ControlLabel, Glyphicon } from 'react-bootstrap';
 import './Profile.css';
 import LoadingSpinner from '../HelperComponents/LoadingSpinner';
-import { Form } from 'semantic-ui-react';
+import { Form, Message } from 'semantic-ui-react';
 import axios from 'axios';
 
 class Profile extends Component {
@@ -12,14 +12,15 @@ class Profile extends Component {
 		this.state = {
 			authProfile: {},
 			userProfile: {},
-			challengeLevel: null
+			challengeLevel: null,
+			showUpdatedMessage: false
 		};
 		this.getUserProfile = this.getUserProfile.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+		this.dismissMessage = this.dismissMessage.bind(this);
 	}
 
 	componentDidMount() {
-		console.log('did mount');
 		const { userProfile, setProfile } = this.props.auth;
 		if (!userProfile) {
 			setProfile((err, authProfile) => {
@@ -30,10 +31,15 @@ class Profile extends Component {
 		}
 	}
 
-	handleChange = (e, { value }) =>
+	handleChange = (e, { value }) => {
 		this.setState({ challengeLevel: value }, () => {
 			this.updateUserProfile();
 		});
+	};
+
+	dismissMessage = () => {
+		this.setState({ showUpdatedMessage: false });
+	};
 
 	getUserProfile() {
 		const { getAccessToken } = this.props.auth;
@@ -49,15 +55,28 @@ class Profile extends Component {
 		const { getAccessToken } = this.props.auth;
 		const headers = { Authorization: `Bearer ${getAccessToken()}` };
 		const data = { challengeFoodLevel: this.state.challengeLevel };
-		axios.post(`/api/user/${this.state.userProfile._id}`, data, { headers });
+		axios
+			.post(`/api/user/${this.state.userProfile._id}`, data, { headers })
+			.then(res => {
+				this.setState({ showUpdatedMessage: true }, () => {
+					setTimeout(() => {
+						this.setState({ showUpdatedMessage: false });
+					}, 4000);
+				});
+			})
+			.catch(err => console.log(err));
 	}
 
 	render() {
 		const { challengeFoodLevel, name } = this.state.userProfile;
 		const { challengeLevel } = this.state;
 		const options = [{ key: 'm', text: 'Male', value: 'male' }, { key: 'f', text: 'Female', value: 'female' }];
+		const notificationMessage = this.state.showUpdatedMessage ? (
+			<Message color="green" header="Success!" content="You've updated your challenge level!" />
+		) : null;
 		return (
 			<div className="container">
+				{notificationMessage}
 				{name ? (
 					<div>
 						<h1>{name}</h1>
