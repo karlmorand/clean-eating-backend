@@ -18,6 +18,7 @@ class App extends Component {
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.setSession = this.setSession.bind(this);
+    this.isAuthenticated = this.isAuthenticated.bind(this);
   }
 
   auth0 = new auth0.WebAuth({
@@ -60,6 +61,12 @@ class App extends Component {
     localStorage.removeItem("id_token");
     localStorage.removeItem("expires_at");
     // TODO: REdirect to homepage
+  }
+  isAuthenticated() {
+    // Check whether the current time is past the
+    // access token's expiry time
+    let expiresAt = JSON.parse(localStorage.getItem("expires_at"));
+    return new Date().getTime() < expiresAt;
   }
 
   render() {
