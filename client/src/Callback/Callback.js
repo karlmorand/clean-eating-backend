@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import loading from './loading.svg';
 
 class Callback extends Component {
+	constructor(props) {
+		super(props);
+		console.log('Callback props: ', this.props);
+	}
 	render() {
 		const style = {
 			position: 'absolute',
