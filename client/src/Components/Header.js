@@ -9,8 +9,8 @@ const Header = props => (
 			<button>
 				<Link to="/">Home</Link>
 			</button>
-			<button onClick={props.login}>Login</button>
-			<button onClick={props.logout}>Logout</button>
+			{props.isAuthed ? <button onClick={props.logout}>Logout</button> : <button onClick={props.login}>Login</button>}
+
 			<button>
 				<Link to="/profile">Profile</Link>
 			</button>
