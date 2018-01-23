@@ -6,7 +6,6 @@ import Main from './Components/Main';
 import Header from './Components/Header';
 import axios from 'axios';
 import './App.css';
-import Auth from './Auth/Auth';
 
 class App extends Component {
 	constructor(props) {
