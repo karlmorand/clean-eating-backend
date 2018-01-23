@@ -24,11 +24,14 @@ class App extends Component {
 		this.setProfile = this.setProfile.bind(this);
 		this.routeTest = this.routeTest.bind(this);
 	}
+	redirectUri = process.env.NODE_ENV === 'development'
+		? 'http://localhost:3000/callback'
+		: 'https://clean-eating-web.herokuapp.com/callback';
 
 	auth0 = new auth0.WebAuth({
 		domain: 'clean-eating.auth0.com',
 		clientID: 'fvQq5PbWiDRLmqxL2I5X1MDW609unyvV',
-		redirectUri: 'http://localhost:3000/callback',
+		redirectUri: `${this.redirectUri}`,
 		audience: 'https://cleaneatingapi.karlmorand.com',
 		responseType: 'token id_token',
 		scope: 'openid profile'
