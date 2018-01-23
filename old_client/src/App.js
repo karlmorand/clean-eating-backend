@@ -22,8 +22,7 @@ class App extends Component {
 			});
 		} else {
 			console.log('found profile');
-			this.setState({ authProfile: use
-				rProfile }, this.userSetup);
+			this.setState({ authProfile: userProfile }, this.userSetup);
 		}
 	}
 

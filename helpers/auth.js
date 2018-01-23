@@ -11,9 +11,7 @@ module.exports.checkJwt = jwt({
 		jwksRequestsPerMinute: 5,
 		jwksUri: 'https://clean-eating.auth0.com/.well-known/jwks.json'
 	}),
-
-	// Validate the audience and the issuer.
-	audience: `https://${process.env.AUTH0_AUDIENCE}`,
-	issuer: `https://${process.env.AUTH0_DOMAIN}`,
+	audience: `${process.env.AUTH0_AUDIENCE}`,
+	issuer: `${process.env.AUTH0_DOMAIN}`,
 	algorithms: ['RS256']
 });
