@@ -10,7 +10,6 @@ import './App.css';
 class App extends Component {
 	constructor(props) {
 		super(props);
-		console.log('App props: ', this.props);
 		this.state = {
 			isAuthed: false,
 			showOnboarding: false,
@@ -40,7 +39,6 @@ class App extends Component {
 				if (authResult && authResult.accessToken && authResult.idToken) {
 					this.setSession(authResult);
 					// history.replace('/home');
-					console.log('Handle auth worked');
 					this.setProfile();
 				} else if (err) {
 					// history.replace('/home');
@@ -51,7 +49,6 @@ class App extends Component {
 	}
 
 	setSession(authResult) {
-		console.log('Set session');
 		// Set the time that the access token will expire at
 		let expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime());
 		localStorage.setItem('access_token', authResult.accessToken);
@@ -74,13 +71,10 @@ class App extends Component {
 	}
 	setProfile() {
 		let accessToken = localStorage.getItem('access_token');
-		console.log('Setting profile');
 		this.auth0.client.userInfo(accessToken, (err, profile) => {
 			if (profile) {
 				const headers = { Authorization: `Bearer ${accessToken}` };
 				this.setState({ authProfile: profile, isAuthed: true });
-				console.log(headers);
-				console.log('PROFILE: ', profile.sub, profile.user_id);
 				this.props.history.push('/');
 			}
 		});
@@ -97,7 +91,7 @@ class App extends Component {
 			})
 			.catch(err => {
 				this.props.history.push('/');
-				console.log(err.description);
+				console.log(err);
 			});
 	}
 	isAuthenticated() {
