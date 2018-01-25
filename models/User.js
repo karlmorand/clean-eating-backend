@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
 			ref: 'DailyEntry'
 		}
 	],
-	challengeFoodLevel: {
+	challengeLevel: {
 		type: Number,
 		min: 1,
 		default: 1
