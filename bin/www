@@ -24,10 +24,15 @@ app.set('port', port);
 
 var server = http.createServer(app);
 // Connect to DB
-console.log(mongoDBURI);
-mongoose.connect(mongoDBURI);
+var options = {
+	keepAlive: 300000,
+	connectTimeoutMS: 30000
+};
+mongoose.connect(mongoDBURI, options);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 mongoose.connection.once('open', function() {
-	console.log('Connected to mongo');
+	console.log('Connected to mongo at: ', mongoDBURI);
 });
 
 /**
