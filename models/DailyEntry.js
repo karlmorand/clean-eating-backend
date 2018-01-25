@@ -16,7 +16,6 @@ const dailyEntrySchema = new mongoose.Schema({
 	},
 	entryTotal: {
 		type: Number,
-		min: 0,
 		// QUESTION: Not sure if I should have a default value for daily entry total
 		// TODO: Decide when and how the entry total will be calculated/updated...or should it even be a property, as opposed to calculating it when needed
 		default: 0
@@ -35,15 +34,27 @@ const dailyEntrySchema = new mongoose.Schema({
 				type: String,
 				default: ''
 			},
-			questionType: String //YESNO, SLIDER, TEXTENTRY
+			questionType: String, //YESNO, SLIDER, TEXTENTRY
+			addToTotal: {
+				type: Boolean,
+				default: true
+			}
 		}
 	]
 });
 
 dailyEntrySchema.pre('save', function(next) {
-	let newEntryTotal = this.entryQuestions.reduce((acc, curr) => ({
-		currentValue: acc.currentValue + curr.currentValue
-	}));
+	console.log(this.entryQuestions);
+	let newEntryTotal = this.entryQuestions.reduce((acc, curr) => {
+		console.log('UPDATING ENTRY TOTAL: ', curr.addToTotal);
+		if (!curr.addToTotal) {
+			curr.currentValue = -curr.currentValue;
+		} else if (!acc.addToTotal) {
+			acc.currentValue = -acc.currentValue;
+		}
+		return { currentValue: acc.currentValue + curr.currentValue };
+	});
+
 	this.entryTotal = newEntryTotal.currentValue;
 	console.log('ENTRIES: ', newEntryTotal);
 	console.log('NEW ENTRY TOTAL: ', this.entryTotal);

@@ -14,11 +14,14 @@ exports.getDailyEntry = (req, res) => {
 		.exec((err, user) => {
 			// function to check if the entry is from today
 			const entryIsToday = entry => {
+				console.log('ENTRY TODAY: ', isToday(entry.date));
 				return isToday(entry.date);
 			};
 
 			entryToReturn = user.currentDailyEntries.find(entryIsToday);
 			if (!entryToReturn) {
+				console.log('No entry for today yet, making one');
+				// TODO: Make sure the entries aren't saved if they can't be/aren't added to the user...otherwise they're just out there floating around
 				DailyEntry.create({ authId: user.authId, owner: user._id, entryQuestions: user.currentQuestions }, function(
 					err,
 					newDailyEntry
@@ -27,11 +30,14 @@ exports.getDailyEntry = (req, res) => {
 						console.log(err);
 						return err;
 					}
+					console.log('Pushing entry to user');
 					user.currentDailyEntries.push(newDailyEntry._id);
 					user.save((err, updatedUser) => {
 						if (err) {
+							console.log('Error saving user: ', err);
 							return err;
 						}
+						console.log('Updated user: ', updatedUser);
 						res.send(newDailyEntry);
 					});
 				});

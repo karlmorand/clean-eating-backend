@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
 	],
 	challengeLevel: {
 		type: Number,
-		min: 1,
+		min: 0,
 		default: 1
 	},
 	gym: {
