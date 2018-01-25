@@ -9,7 +9,7 @@ const isToday = require('date-fns/is_today');
 exports.getDailyEntry = (req, res) => {
 	console.log('Getting daily entry');
 	let entryToReturn;
-	User.findOne({ authId: req.params.authId })
+	User.findOne({ _id: req.params.id })
 		.populate('currentDailyEntries')
 		.exec((err, user) => {
 			// function to check if the entry is from today
