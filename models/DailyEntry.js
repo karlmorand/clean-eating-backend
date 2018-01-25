@@ -40,4 +40,14 @@ const dailyEntrySchema = new mongoose.Schema({
 	]
 });
 
+dailyEntrySchema.pre('save', function(next) {
+	let newEntryTotal = this.entryQuestions.reduce((acc, curr) => ({
+		currentValue: acc.currentValue + curr.currentValue
+	}));
+	this.entryTotal = newEntryTotal.currentValue;
+	console.log('ENTRIES: ', newEntryTotal);
+	console.log('NEW ENTRY TOTAL: ', this.entryTotal);
+	next();
+});
+
 module.exports = mongoose.model('DailyEntry', dailyEntrySchema, 'dailyEntries');

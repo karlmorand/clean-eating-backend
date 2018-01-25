@@ -42,6 +42,7 @@ exports.getDailyEntry = (req, res) => {
 }; // see if a daily entry for today exists for the user, if so return it // if there isn't one create one based on the user's 'current questions' array (which is based on their gym, but stored on the user not the gym so i don't have to keep looking up the gym...the user's current questions are only changed when the gym is changed...and when a user is created, and chooses a gym, their 'current questions' prop is populated with their gym's ) //check if user is in the DB //search the daily entries that match their UID and the req's date // TODO: Make sure workouts are limited to 5 points per week
 
 exports.updateDailyEntryScore = (req, res) => {
+	console.log('UPDATE DAILY ENTRY');
 	console.log(req.body);
 
 	// Post answers in a req.body.updatedAnswers array with the format : updatedAnswers: [{_id: ObjectId, newValue: Number}]
@@ -50,8 +51,9 @@ exports.updateDailyEntryScore = (req, res) => {
 			console.log(err);
 			res.send(err);
 		} else {
-			// let oldEntry = entry.entryQuestions.id(updatedAnswer._id);
-			entry.entryQuestions = req.body;
+			const { updatedAnswer } = req.body;
+			let question = entry.entryQuestions.id(updatedAnswer._id);
+			question.currentValue = updatedAnswer.newValue;
 			entry.save((err, updatedEntry) => {
 				if (err) {
 					console.log(err);
