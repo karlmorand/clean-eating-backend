@@ -46,18 +46,9 @@ const dailyEntrySchema = new mongoose.Schema({
 dailyEntrySchema.pre('save', function(next) {
 	console.log(this.entryQuestions);
 	let newEntryTotal = this.entryQuestions.reduce((acc, curr) => {
-		console.log('UPDATING ENTRY TOTAL: ', curr.addToTotal, acc.addToTotal);
-		if (curr.addToTotal === false) {
-			curr.currentValue = -curr.currentValue;
-		} else if (acc.addToTotal === false) {
-			acc.currentValue = -acc.currentValue;
-		}
 		return { currentValue: acc.currentValue + curr.currentValue };
 	});
-
 	this.entryTotal = newEntryTotal.currentValue;
-	console.log('ENTRIES: ', newEntryTotal);
-	console.log('NEW ENTRY TOTAL: ', this.entryTotal);
 	next();
 });
 
