@@ -52,11 +52,13 @@ exports.updateUserChallengeLevel = (req, res) => {
 };
 
 exports.getUserProfile = (req, res) => {
+	console.log('SEARCHING FOR USER: ', req.params);
 	User.findOne({ authId: req.params.id }).exec((err, user) => {
 		if (err) {
 			console.log(err);
 			return err;
 		}
+		console.log('SENDING USER: ', user);
 		res.send(user);
 	});
 };

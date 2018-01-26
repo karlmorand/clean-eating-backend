@@ -17,7 +17,7 @@ exports.getDailyEntry = (req, res) => {
 				console.log('ENTRY TODAY: ', isToday(entry.date));
 				return isToday(entry.date);
 			};
-
+			// TODO: need better checking to prevent errors from user being null and erroring trying to search currentDailyEntries
 			entryToReturn = user.currentDailyEntries.find(entryIsToday);
 			if (!entryToReturn) {
 				console.log('No entry for today yet, making one');
@@ -42,6 +42,7 @@ exports.getDailyEntry = (req, res) => {
 					});
 				});
 			} else {
+				console.log(entryToReturn);
 				res.send(entryToReturn);
 			}
 		});
