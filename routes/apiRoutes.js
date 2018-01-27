@@ -7,7 +7,7 @@ const usersController = require('../controllers/usersController.js');
 
 //Get today's daily entry if one exists, if not create one and return it
 // TODO: Update this to get a daily entry based on a date passed
-router.get('/dailyentry/:id', checkJwt, jwtAuthz(['athlete']), entriesController.getDailyEntry);
+router.get('/dailyentry/:id/:date', checkJwt, jwtAuthz(['athlete']), entriesController.getDailyEntry);
 
 router.post('/user/:id/setup', checkJwt, jwtAuthz(['athlete']), usersController.userSetup);
 

@@ -46,6 +46,7 @@ app.use(function(err, req, res, next) {
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
 	// render the error page
+	// TODO: fix this since i don't have a view engine server side
 	res.status(err.status || 500);
 	res.render('error');
 });

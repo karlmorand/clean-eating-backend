@@ -2,50 +2,54 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const DailyEntry = mongoose.model('DailyEntry');
 const Gym = mongoose.model('Gym');
-const isToday = require('date-fns/is_today');
-// might want to use date-fns for date issues
+var endOfDay = require('date-fns/end_of_day');
+var startOfDay = require('date-fns/start_of_day');
 // TODO: cleanup the callback hell here, use async
 // TODO: Sometimes on page refresh (when not logging in, but going back to the page after a while), no user is found b/c the info isn't passed, which cuases a fatal error
 exports.getDailyEntry = (req, res) => {
 	console.log('Getting daily entry');
-	let entryToReturn;
-	User.findOne({ _id: req.params.id })
-		.populate('currentDailyEntries')
-		.exec((err, user) => {
-			// function to check if the entry is from today
-			const entryIsToday = entry => {
-				console.log('ENTRY TODAY: ', isToday(entry.date));
-				return isToday(entry.date);
-			};
-			// TODO: need better checking to prevent errors from user being null and erroring trying to search currentDailyEntries
-			entryToReturn = user.currentDailyEntries.find(entryIsToday);
-			if (!entryToReturn) {
-				console.log('No entry for today yet, making one');
-				// TODO: Make sure the entries aren't saved if they can't be/aren't added to the user...otherwise they're just out there floating around
-				DailyEntry.create({ authId: user.authId, owner: user._id, entryQuestions: user.currentQuestions }, function(
-					err,
-					newDailyEntry
-				) {
-					if (err) {
-						console.log(err);
-						return err;
-					}
-					console.log('Pushing entry to user');
-					user.currentDailyEntries.push(newDailyEntry._id);
-					user.save((err, updatedUser) => {
+	console.log(req.params.id);
+	console.log(req.params.date);
+	const entryDateToFind = new Date(parseInt(req.params.date));
+	const dayStart = startOfDay(entryDateToFind);
+	const dayEnd = endOfDay(entryDateToFind);
+	DailyEntry.findOne({
+		owner: req.params.id,
+		date: {
+			$gte: dayStart,
+			$lte: dayEnd
+		}
+	}).exec((err, entry) => {
+		console.log('EXEC the daily entry find');
+		if (err) {
+			console.log('ERROR finding an entry');
+			console.log(err);
+			return err;
+		}
+		if (!entry) {
+			console.log('No entry for today yet, making one, finding the user first');
+			User.findOne({ _id: req.params.id }).exec((err, user) => {
+				if (err) {
+					console.log(err);
+					return err;
+				}
+				DailyEntry.create(
+					{ authId: user.authId, owner: req.params.id, entryQuestions: user.currentQuestions },
+					(err, newDailyEntry) => {
 						if (err) {
-							console.log('Error saving user: ', err);
+							console.log(err);
 							return err;
 						}
-						console.log('Updated user: ', updatedUser);
+						console.log('Created the new entry, sending now');
 						res.send(newDailyEntry);
-					});
-				});
-			} else {
-				console.log(entryToReturn);
-				res.send(entryToReturn);
-			}
-		});
+					}
+				);
+			});
+		} else {
+			console.log('MATCHING ENTRIES FOUND: ', entry);
+			res.send(entry);
+		}
+	});
 }; // see if a daily entry for today exists for the user, if so return it // if there isn't one create one based on the user's 'current questions' array (which is based on their gym, but stored on the user not the gym so i don't have to keep looking up the gym...the user's current questions are only changed when the gym is changed...and when a user is created, and chooses a gym, their 'current questions' prop is populated with their gym's ) //check if user is in the DB //search the daily entries that match their UID and the req's date // TODO: Make sure workouts are limited to 5 points per week
 
 exports.updateDailyEntryScore = (req, res) => {

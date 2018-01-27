@@ -16,12 +16,6 @@ const userSchema = new mongoose.Schema({
 	},
 	roles: [String],
 	currentQuestions: [],
-	currentDailyEntries: [
-		{
-			type: mongoose.Schema.ObjectId,
-			ref: 'DailyEntry'
-		}
-	],
 	challengeLevel: {
 		type: Number,
 		min: 0,
