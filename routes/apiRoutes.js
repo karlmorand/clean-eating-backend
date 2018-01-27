@@ -4,6 +4,7 @@ const jwtAuthz = require('express-jwt-authz');
 const { checkJwt } = require('../helpers/auth.js');
 const entriesController = require('../controllers/entriesController.js');
 const usersController = require('../controllers/usersController.js');
+const gymsController = require('../controllers/gymsController.js');
 
 //Get today's daily entry if one exists, if not create one and return it
 // TODO: Update this to get a daily entry based on a date passed
@@ -17,5 +18,7 @@ router.post('/dailyentry/:entryId', checkJwt, jwtAuthz(['athlete']), entriesCont
 router.get('/user/:id', checkJwt, usersController.getUserProfile);
 
 router.post('/user/:id', checkJwt, usersController.updateUserChallengeLevel);
+
+router.get('/leaderboard/:gymId', checkJwt, gymsController.getLeaderboard);
 
 module.exports = router;

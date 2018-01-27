@@ -34,7 +34,7 @@ exports.getDailyEntry = (req, res) => {
 					return err;
 				}
 				DailyEntry.create(
-					{ authId: user.authId, owner: req.params.id, entryQuestions: user.currentQuestions },
+					{ authId: user.authId, owner: req.params.id, entryQuestions: user.currentQuestions, gym: user.gym },
 					(err, newDailyEntry) => {
 						if (err) {
 							console.log(err);
