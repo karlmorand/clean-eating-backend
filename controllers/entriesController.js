@@ -2,22 +2,21 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const DailyEntry = mongoose.model('DailyEntry');
 const Gym = mongoose.model('Gym');
-var endOfDay = require('date-fns/end_of_day');
-var startOfDay = require('date-fns/start_of_day');
+
+// var endOfDay = require('date-fns/end_of_day');
+// var startOfDay = require('date-fns/start_of_day');
 // TODO: cleanup the callback hell here, use async
 // TODO: Sometimes on page refresh (when not logging in, but going back to the page after a while), no user is found b/c the info isn't passed, which cuases a fatal error
 exports.getDailyEntry = (req, res) => {
 	console.log('Getting daily entry');
-	console.log(req.params.id);
-	console.log(req.params.date);
-	const entryDateToFind = new Date(parseInt(req.params.date));
-	const dayStart = startOfDay(entryDateToFind);
-	const dayEnd = endOfDay(entryDateToFind);
+	const dayStart = new Date(parseInt(req.params.date));
+	dayStart.setHours(0, 0, 0, 0);
+
 	DailyEntry.findOne({
 		owner: req.params.id,
 		date: {
-			$gte: dayStart,
-			$lte: dayEnd
+			$gte: dayStart.toISOString(),
+			$lte: new Date(parseInt(req.params.date))
 		}
 	}).exec((err, entry) => {
 		console.log('EXEC the daily entry find');
@@ -34,7 +33,13 @@ exports.getDailyEntry = (req, res) => {
 					return err;
 				}
 				DailyEntry.create(
-					{ authId: user.authId, owner: req.params.id, entryQuestions: user.currentQuestions, gym: user.gym },
+					{
+						authId: user.authId,
+						owner: req.params.id,
+						entryQuestions: user.currentQuestions,
+						gym: user.gym,
+						date: new Date(parseInt(req.params.date))
+					},
 					(err, newDailyEntry) => {
 						if (err) {
 							console.log(err);
