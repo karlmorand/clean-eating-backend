@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Gym = mongoose.model('Gym');
+const DailyEntry = mongoose.model('DailyEntry');
 
 exports.userSetup = (req, res) => {
 	console.log('USER SETUP: ', req.body);
@@ -60,5 +61,16 @@ exports.getUserProfile = (req, res) => {
 		}
 		console.log('SENDING USER: ', user);
 		res.send(user);
+	});
+};
+
+exports.getHistory = (req, res) => {
+	console.log('GET USER HISTORY');
+	DailyEntry.find({ owner: req.params.id }).exec((err, entries) => {
+		if (err) {
+			console.log('ERROR GETTING HISTORY: ', err);
+			return err;
+		}
+		res.send(entries);
 	});
 };

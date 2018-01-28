@@ -11,7 +11,7 @@ const gymsController = require('../controllers/gymsController.js');
 router.get('/dailyentry/:id/:date', checkJwt, jwtAuthz(['athlete']), entriesController.getDailyEntry);
 
 router.post('/user/:id/setup', checkJwt, jwtAuthz(['athlete']), usersController.userSetup);
-
+router.get('/user/:id/history', checkJwt, usersController.getHistory);
 //Update a daily entry based on the id of the entry
 router.post('/dailyentry/:entryId', checkJwt, jwtAuthz(['athlete']), entriesController.updateDailyEntryScore);
 
