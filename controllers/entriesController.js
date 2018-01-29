@@ -11,12 +11,16 @@ exports.getDailyEntry = (req, res) => {
 	console.log('Getting daily entry');
 	const dayStart = new Date(parseInt(req.params.date));
 	dayStart.setHours(0, 0, 0, 0);
-
+	console.log(
+		'SEARCHING FOR THIS DATE RANGE: ',
+		dayStart.toISOString(),
+		new Date(parseInt(req.params.date)).toISOString()
+	);
 	DailyEntry.findOne({
 		owner: req.params.id,
 		date: {
 			$gte: dayStart.toISOString(),
-			$lte: new Date(parseInt(req.params.date))
+			$lte: new Date(parseInt(req.params.date)).toISOString()
 		}
 	}).exec((err, entry) => {
 		console.log('EXEC the daily entry find');
@@ -38,7 +42,7 @@ exports.getDailyEntry = (req, res) => {
 						owner: req.params.id,
 						entryQuestions: user.currentQuestions,
 						gym: user.gym,
-						date: new Date(parseInt(req.params.date))
+						date: new Date(parseInt(req.params.date)).toISOString()
 					},
 					(err, newDailyEntry) => {
 						if (err) {
