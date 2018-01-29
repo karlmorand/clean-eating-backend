@@ -85,3 +85,14 @@ exports.updateDailyEntryScore = (req, res) => {
 		}
 	});
 };
+
+exports.getExistingEntry = (req, res) => {
+	DailyEntry.findOne({ _id: req.params.entryId }, (err, entry) => {
+		if (err) {
+			console.log(err);
+			res.send(err);
+		} else {
+			res.send(entry);
+		}
+	});
+};
