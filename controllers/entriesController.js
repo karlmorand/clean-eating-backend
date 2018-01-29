@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const DailyEntry = mongoose.model('DailyEntry');
 const Gym = mongoose.model('Gym');
+var moment = require('moment');
 
 // var endOfDay = require('date-fns/end_of_day');
 // var startOfDay = require('date-fns/start_of_day');
@@ -9,9 +10,13 @@ const Gym = mongoose.model('Gym');
 // TODO: Sometimes on page refresh (when not logging in, but going back to the page after a while), no user is found b/c the info isn't passed, which cuases a fatal error
 exports.getDailyEntry = (req, res) => {
 	console.log('Getting daily entry');
-	const dayStart = new Date(parseInt(req.params.date));
-	dayStart.setHours(0, 0, 0, 0);
-	dayStart.toISOString();
+	// let dayStart = new Date(parseInt(req.params.date));
+	// dayStart.setHours(0, 0, 0, 0);
+	// dayStart.toISOString();
+
+	let dayStart = moment(parseInt(req.params.date))
+		.startOf('day')
+		.toISOString();
 
 	console.log('SEARCHING FOR THIS DATE RANGE: ', dayStart, new Date(parseInt(req.params.date)).toISOString());
 	DailyEntry.findOne({
