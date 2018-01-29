@@ -19,7 +19,6 @@ exports.getLeaderboard = (req, res) => {
 				});
 
 				if (existingEntry) {
-					console.log('Found existing entry');
 					existingEntry.total += entry.entryTotal;
 				} else {
 					leaderboardResults.push({ id: entry.owner.id, total: entry.entryTotal, name: entry.owner.name });

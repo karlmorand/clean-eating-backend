@@ -2,19 +2,16 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const DailyEntry = mongoose.model('DailyEntry');
 const Gym = mongoose.model('Gym');
-var moment = require('moment');
+var moment = require('moment-timezone');
 
-// var endOfDay = require('date-fns/end_of_day');
-// var startOfDay = require('date-fns/start_of_day');
 // TODO: cleanup the callback hell here, use async
 // TODO: Sometimes on page refresh (when not logging in, but going back to the page after a while), no user is found b/c the info isn't passed, which cuases a fatal error
 exports.getDailyEntry = (req, res) => {
 	console.log('Getting daily entry');
-	// let dayStart = new Date(parseInt(req.params.date));
-	// dayStart.setHours(0, 0, 0, 0);
-	// dayStart.toISOString();
 
-	let dayStart = moment(parseInt(req.params.date))
+	// TODO: Will need to make this dynamic/user selectable, not hardcoded to East Coast timezone
+	let dayStart = moment
+		.tz(parseInt(req.params.date), 'America/New_York')
 		.startOf('day')
 		.toISOString();
 
