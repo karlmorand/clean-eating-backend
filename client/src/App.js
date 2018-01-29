@@ -107,8 +107,6 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<button onClick={this.routeTest}>ROUTE TEST</button>
-				<Header login={this.login} logout={this.logout} isAuthed={this.state.isAuthed} />
 				<Main handleAuth={this.handleAuthentication} isAuthed={this.state.isAuthed} profile={this.state.authProfile} />
 			</div>
 		);

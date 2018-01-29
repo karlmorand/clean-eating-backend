@@ -14,7 +14,6 @@ class Main extends Component {
 
 		return (
 			<div>
-				{this.props.profile ? <p>Logged in</p> : <p>Not logged in</p>}
 				<Switch>
 					<Route exact path="/" component={Home} />
 					<Route path="/profile" component={() => <Profile profile={this.props.profile} />} />

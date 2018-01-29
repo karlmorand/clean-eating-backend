@@ -6,7 +6,7 @@ const Gym = mongoose.model('Gym');
 exports.getLeaderboard = (req, res) => {
 	let leaderboardResults = [];
 	DailyEntry.find({ gym: req.params.gymId })
-		.populate('owner', 'name')
+		.populate('owner', 'name picture')
 		.exec((err, dailyEntries) => {
 			if (err) {
 				console.log(err);
@@ -21,7 +21,12 @@ exports.getLeaderboard = (req, res) => {
 				if (existingEntry) {
 					existingEntry.total += entry.entryTotal;
 				} else {
-					leaderboardResults.push({ id: entry.owner.id, total: entry.entryTotal, name: entry.owner.name });
+					leaderboardResults.push({
+						id: entry.owner.id,
+						total: entry.entryTotal,
+						name: entry.owner.name,
+						picture: entry.owner.picture
+					});
 				}
 			});
 			res.send(leaderboardResults);
