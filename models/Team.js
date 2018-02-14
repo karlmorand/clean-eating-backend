@@ -5,6 +5,10 @@ const teamSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  gym: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Gym"
+  },
   leader: {
     type: mongoose.Schema.ObjectId,
     ref: "User"
@@ -17,4 +21,4 @@ const teamSchema = new mongoose.Schema({
   ]
 });
 
-module.exports = mongoose.model("Team", teamSchema, "gyms");
+module.exports = mongoose.model("Team", teamSchema, "teams");
