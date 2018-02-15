@@ -17,7 +17,6 @@ exports.userSetup = (req, res) => {
       { _id: req.params.id },
       {
         gym: gym._id,
-        currentQuestions: gym.currentQuestions,
         onboardingComplete: true,
         challengeLevel: req.body.data.challengeLevel
       },

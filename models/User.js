@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   roles: [String],
-  currentQuestions: [],
   challengeLevel: {
     type: Number,
     min: 0,
