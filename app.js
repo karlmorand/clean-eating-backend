@@ -13,7 +13,7 @@ const Team = require("./models/Team.js");
 //Auth middleware from Auth0 guide
 const cors = require("cors");
 const apiRoutes = require("./routes/apiRoutes");
-
+require("newrelic");
 var app = express();
 app.use(cors());
 
