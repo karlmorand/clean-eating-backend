@@ -18,6 +18,7 @@ const gymSchema = new mongoose.Schema({
 			description: String,
 			maxDailyPoints: Number,
 			startingValue: Number,
+			maxWeeklyPoints: Number, // TODO: make sure having it here doesn't cause it to be required and thus cause errors for q's that don't have maxWeeklyPoints set
 			questionType: String //YESNO, SLIDER, TEXTENTRY
 		}
 	]
