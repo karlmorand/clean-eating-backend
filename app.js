@@ -15,6 +15,19 @@ const cors = require("cors");
 const apiRoutes = require("./routes/apiRoutes");
 require("newrelic");
 var app = express();
+
+// Setting up Sentry from https://sentry.io/karl-morand/broccoli-backend/getting-started/node-express/
+var Raven = require('raven');
+Raven.config('https://d1331ccb33024ac4ac930fe61ab1155e:28a1a344767949aeaa04e16f5f072e85@sentry.io/289793').install();
+app.use(Raven.requestHandler());
+app.use(Raven.errorHandler());
+app.use(function onError(err, req, res, next) {
+  // The error id is attached to `res.sentry` to be returned
+  // and optionally displayed to the user for support.
+  res.statusCode = 500;
+  res.end(res.sentry + '\n');
+});
+
 app.use(cors());
 
 if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
