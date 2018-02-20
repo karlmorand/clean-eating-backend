@@ -13,6 +13,9 @@ exports.getLeaderboard = (req, res) => {
     .tz("America/New_York")
     .startOf("week")
     .toISOString();
+
+  console.log("TYPE OF GYM ID: ", req.params.gymId._id);
+
   DailyEntry.find({ gym: req.params.gymId })
     .populate({ path: "owner", select: "name picture team" })
     .populate({
