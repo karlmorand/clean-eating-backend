@@ -60,7 +60,13 @@ exports.updateUserTeam = (req, res) => {
     { team: req.body.team },
     { new: true }
   )
-    .populate("team")
+    .populate({
+      path: "team",
+      populate: { path: "leader", select: "name" }
+    })
+    .populate({
+      path: "gym"
+    })
     .exec((err, updatedUser) => {
       if (err) {
         console.log(err);
