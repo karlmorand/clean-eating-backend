@@ -13,19 +13,22 @@ const Team = require("./models/Team.js");
 //Auth middleware from Auth0 guide
 const cors = require("cors");
 const apiRoutes = require("./routes/apiRoutes");
+const apiV1Routes = require("./routes/apiV1Routes");
 require("newrelic");
 var app = express();
 
 // Setting up Sentry from https://sentry.io/karl-morand/broccoli-backend/getting-started/node-express/
-var Raven = require('raven');
-Raven.config('https://d1331ccb33024ac4ac930fe61ab1155e:28a1a344767949aeaa04e16f5f072e85@sentry.io/289793').install();
+var Raven = require("raven");
+Raven.config(
+  "https://d1331ccb33024ac4ac930fe61ab1155e:28a1a344767949aeaa04e16f5f072e85@sentry.io/289793"
+).install();
 app.use(Raven.requestHandler());
 app.use(Raven.errorHandler());
 app.use(function onError(err, req, res, next) {
   // The error id is attached to `res.sentry` to be returned
   // and optionally displayed to the user for support.
   res.statusCode = 500;
-  res.end(res.sentry + '\n');
+  res.end(res.sentry + "\n");
 });
 
 app.use(cors());
@@ -41,6 +44,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "client/build")));
+app.use("/api/v1", apiV1Routes);
 app.use("/api", apiRoutes);
 
 app.get("*", (req, res) => {
