@@ -77,10 +77,6 @@ exports.getUserProfile = (req, res) => {
       path: "team",
       populate: { path: "leader", select: "name" }
     })
-    // .populate({ //this aint working, but not sure I actually need it
-    //   path: "gym",
-    //   select: "name"
-    // })
     .exec((err, user) => {
       if (err) {
         console.log(err);
