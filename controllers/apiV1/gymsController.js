@@ -4,7 +4,6 @@ const DailyEntry = mongoose.model("DailyEntry");
 const Gym = mongoose.model("Gym");
 var moment = require("moment-timezone");
 const Team = mongoose.model("Team");
-
 exports.getLeaderboard = (req, res) => {
   let leaderboardResults = [];
   let weeklyLeaderboard = [];
@@ -13,8 +12,6 @@ exports.getLeaderboard = (req, res) => {
     .tz("America/New_York")
     .startOf("week")
     .toISOString();
-
-  console.log("TYPE OF GYM ID: ", req.params.gymId._id);
 
   DailyEntry.find({ gym: req.params.gymId })
     .populate({ path: "owner", select: "name picture team" })
