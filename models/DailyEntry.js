@@ -43,9 +43,13 @@ const dailyEntrySchema = new mongoose.Schema({
         type: Number,
         default: 0
       },
-      enabled: {
+      disabled: {
         type: Boolean,
-        default: true
+        default: false
+      },
+      maxWeeklyText: {
+        type: String,
+        default: ""
       }
     }
   ]

@@ -11,6 +11,7 @@ const gymSchema = new mongoose.Schema({
       questionTitle: String,
       description: String,
       maxDailyPoints: Number,
+      enabled: Boolean,
       startingValue: Number,
       maxWeeklyPoints: Number,
       questionType: String //YESNO, SLIDER, TEXTENTRY

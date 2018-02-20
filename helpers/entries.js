@@ -5,30 +5,49 @@ const mongoose = require("mongoose");
 var moment = require("moment-timezone");
 const DailyEntry = mongoose.model("DailyEntry");
 
-module.exports.checkReachedMaxWeeklyPoints = dailyEntry => {
+module.exports.checkReachedMaxWeeklyPoints = async dailyEntry => {
   const now = moment.tz("America/New_York").toISOString();
   const weekStart = moment
     .tz("America/New_York")
     .day(0)
     .startOf("day")
     .toISOString();
-  console.log("DAYS: ", today, weekStart);
+  console.log("DAYS: ", weekStart, now);
 
   //get all of the user's entries from the past week
 
-  const entries = DailyEntry.find({
+  const entries = await DailyEntry.find({
     owner: dailyEntry.owner,
     date: {
       $gte: weekStart,
       $lte: now
     }
-  }).exec((err, entries) => {
-    if (err) {
-      console.log("ERROR finding entries in checkReachedMaxWeeklyPoints");
-      return new Error("Can't find entries to checkReachedMaxWeeklyPoints");
+  }).exec();
+
+  const updatedQuestions = dailyEntry.entryQuestions.map(question => {
+    if (question.maxWeeklyPoints > 0) {
+      //logic for looping over weekly entries, calculating running total, and deciding if it should be enabled
+      let weeklyTotal = 0;
+      entries.forEach(entry => {
+        let currentQuestion = entry.entryQuestions.find(
+          entryQ => entryQ.questionTitle === question.questionTitle
+        );
+        weeklyTotal += currentQuestion.currentValue;
+      });
+      if (weeklyTotal >= question.maxWeeklyPoints) {
+        question.disabled = true;
+      }
+      return question;
+    } else {
+      return question;
     }
-    // TODO: Definetly need to setup a better way to handle this
-    //loop over the entries, key can be question title, use similar logic to the leadeboard in terms of looping overobejcts and createing new array
-    entries.forEach(entry => {});
+  });
+
+  return new Promise((resolve, reject) => {
+    if (entries) {
+      resolve(updatedQuestions);
+    } else {
+      reject(Error("Couldn't check max weekly points for entry"));
+    }
   });
 };

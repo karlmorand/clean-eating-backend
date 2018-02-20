@@ -3,6 +3,8 @@ const User = mongoose.model("User");
 const DailyEntry = mongoose.model("DailyEntry");
 const Gym = mongoose.model("Gym");
 var moment = require("moment-timezone");
+const checkReachedMaxWeeklyPoints = require("../../helpers/entries")
+  .checkReachedMaxWeeklyPoints;
 
 // TODO: cleanup the callback hell here, use async
 // TODO: Sometimes on page refresh (when not logging in, but going back to the page after a while), no user is found b/c the info isn't passed, which cuases a fatal error
@@ -19,7 +21,7 @@ exports.getDailyEntry = (req, res) => {
       $gte: dayStart,
       $lte: new Date(parseInt(req.params.date)).toISOString()
     }
-  }).exec((err, entry) => {
+  }).exec(async (err, entry) => {
     if (err) {
       console.log("ERROR finding an entry");
       console.log(err);
@@ -43,16 +45,23 @@ exports.getDailyEntry = (req, res) => {
               gym: user.gym,
               date: new Date(parseInt(req.params.date)).toISOString()
             },
-            (err, newDailyEntry) => {
+            async (err, newDailyEntry) => {
               if (err) {
                 console.log(err);
                 return err;
               }
+              const updatedEntries = await checkReachedMaxWeeklyPoints(
+                newDailyEntry
+              );
+              newDailyEntry.entryQuestions = updatedEntries;
               res.send(newDailyEntry);
             }
           );
         });
     } else {
+      const updatedEntries = await checkReachedMaxWeeklyPoints(entry);
+      entry.entryQuestions = updatedEntries;
+
       res.send(entry);
     }
   });
