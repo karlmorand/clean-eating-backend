@@ -21,14 +21,18 @@ exports.userSetup = (req, res) => {
         challengeLevel: req.body.data.challengeLevel
       },
       { new: true }
-    ).exec((err, user) => {
-      if (err) {
-        console.log(err);
-        return err;
-      }
-      // TODO: Add user to a gym's list of members
-      res.send(user);
-    });
+    )
+      .populate({
+        path: "gym"
+      })
+      .exec((err, user) => {
+        if (err) {
+          console.log(err);
+          return err;
+        }
+        // TODO: Add user to a gym's list of members
+        res.send(user);
+      });
   });
 };
 
@@ -60,7 +64,13 @@ exports.updateUserTeam = (req, res) => {
     { team: req.body.team },
     { new: true }
   )
-    .populate("team")
+    .populate({
+      path: "team",
+      populate: { path: "leader", select: "name" }
+    })
+    .populate({
+      path: "gym"
+    })
     .exec((err, updatedUser) => {
       if (err) {
         console.log(err);
