@@ -26,6 +26,7 @@ exports.getLeaderboard = (req, res) => {
       }
 
       //Overall results logic...loop over dailyEntries, add each value to a running list of each person, return [{_id:String, name:String, total: Number}]
+      //TODO: build better error handling here so it doesn't fail if an id is null, just skip that entry
       dailyEntries.forEach(entry => {
         let existingEntry = leaderboardResults.find(leaderboard => {
           return leaderboard.id === entry.owner.id;
