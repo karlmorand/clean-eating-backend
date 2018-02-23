@@ -15,10 +15,12 @@ const gymSchema = new mongoose.Schema({
       questionType: String //YESNO, SLIDER, TEXTENTRY
     }
   ],
-  foodGude: {
-    type: String,
-    trim: true
-  }
+  foodGuide: [
+    {
+      sectionTitle: String,
+      items: [String]
+    }
+  ]
 });
 
 module.exports = mongoose.model("Gym", gymSchema, "gyms");
