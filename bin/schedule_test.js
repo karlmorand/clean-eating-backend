@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var mongoose = require("mongoose");
-const User = require("./models/User.js");
+const User = require("../models/User.js");
 
 User.find({}).exec((err, users) => {
   if (err) {
