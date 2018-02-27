@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const User = mongoose.model("User");
-const DailyEntry = mongoose.model("DailyEntry");
-const Gym = mongoose.model("Gym");
+var mongoose = require("mongoose");
+var User = mongoose.model("User");
+var DailyEntry = mongoose.model("DailyEntry");
+var Gym = mongoose.model("Gym");
 var moment = require("moment-timezone");
 
 User.find({}).exec((err, users) => {
