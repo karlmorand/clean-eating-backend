@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var mongoose = require("mongoose");
 var User = mongoose.model("User");
 var DailyEntry = mongoose.model("DailyEntry");
