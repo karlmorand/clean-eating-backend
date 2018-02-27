@@ -1,10 +1,7 @@
 #!/usr/bin/env node
 
 var mongoose = require("mongoose");
-var User = mongoose.model("User");
-var DailyEntry = mongoose.model("DailyEntry");
-var Gym = mongoose.model("Gym");
-var moment = require("moment-timezone");
+const User = require("./models/User.js");
 
 User.find({}).exec((err, users) => {
   if (err) {
