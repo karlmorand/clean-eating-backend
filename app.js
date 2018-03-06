@@ -1,3 +1,4 @@
+require("newrelic");
 var express = require("express");
 var path = require("path");
 var favicon = require("serve-favicon");
@@ -14,7 +15,6 @@ const Team = require("./models/Team.js");
 const cors = require("cors");
 const apiRoutes = require("./routes/apiRoutes");
 const apiV1Routes = require("./routes/apiV1Routes");
-require("newrelic");
 var app = express();
 
 // Setting up Sentry from https://sentry.io/karl-morand/broccoli-backend/getting-started/node-express/
